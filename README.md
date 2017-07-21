@@ -1,2 +1,3 @@
-# my-bash
-bash personalization
+# bash personalization and enhancement
+
+for productivity
