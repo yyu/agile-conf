@@ -14,14 +14,15 @@ def make_dir_as_needed(path: str) -> None:
     os.makedirs(folder, exist_ok=True)
 
 
-def shell_run(cmd: str) -> None:
-    subprocess.check_call(cmd, shell=True)
+def shell_run(cmd: str) -> int:
+    return subprocess.check_call(cmd, shell=True)
 
 
 def add_to_bashrc(rc_path: str) -> None:
     shell_run('echo >> ~/.bashrc')
     shell_run('echo "# added by my-bash/install" >> ~/.bashrc')
-    shell_run('echo ". %s" >> ~/.bashrc' % rc_path)
+    shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
+    shell_run(f'. {rc_path}') # also import into the current bash session
 
 
 class Rc:
@@ -50,7 +51,8 @@ if __name__ == '__main__':
     url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
 
     rc_list = [
-        Rc(f'{install_folder}/.termcolors.rc',  f'{url_prefix}/termcolors.rc', add_to_bashrc)
+        Rc(f'{install_folder}/.termcolors.rc',  f'{url_prefix}/termcolors.rc', add_to_bashrc),
+        Rc(f'{install_folder}/.terminal.prompt.rc',  f'{url_prefix}/terminal_bash_prompt.rc', add_to_bashrc)
     ]
 
     for rc in rc_list:
