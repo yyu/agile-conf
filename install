@@ -83,7 +83,8 @@ if __name__ == '__main__':
 
     rc_list = [
         Rc(f'{install_folder}/.termcolors.rc',  f'{url_prefix}/termcolors.rc', add_to_bashrc),
-        Rc(f'{install_folder}/.terminal.prompt.rc',  f'{url_prefix}/terminal_bash_prompt.rc', add_to_bashrc)
+        Rc(f'{install_folder}/.terminal.prompt.rc',  f'{url_prefix}/terminal_bash_prompt.rc', add_to_bashrc),
+        Rc(f'{install_folder}/.bash.aliases.rc',  f'{url_prefix}/bash_aliases.rc', add_to_bashrc)
     ]
 
     for rc in rc_list:
