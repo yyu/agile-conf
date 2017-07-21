@@ -1,0 +1,2 @@
+# my-bash
+bash personalization
