@@ -5,6 +5,37 @@ import urllib.request
 import subprocess
 
 
+class Color:
+
+    @staticmethod
+    def red(s):
+        return '\033[31m' + s + '\033[0m'
+
+    @staticmethod
+    def green(s):
+        return '\033[32m' + s + '\033[0m'
+
+    @staticmethod
+    def yellow(s):
+        return '\033[33m' + s + '\033[0m'
+
+    @staticmethod
+    def blue(s):
+        return '\033[34m' + s + '\033[0m'
+
+    @staticmethod
+    def magenta(s):
+        return '\033[35m' + s + '\033[0m'
+
+    @staticmethod
+    def cyan(s):
+        return '\033[36m' + s + '\033[0m'
+
+    @staticmethod
+    def gray(s):
+        return '\033[37m' + s + '\033[0m'
+
+
 def make_full_path(path: str) -> str:
     return os.path.expanduser(path)
 
@@ -15,6 +46,7 @@ def make_dir_as_needed(path: str) -> None:
 
 
 def shell_run(cmd: str) -> int:
+    print(Color.gray(f'> {cmd}'))
     return subprocess.check_call(cmd, shell=True)
 
 
@@ -22,7 +54,6 @@ def add_to_bashrc(rc_path: str) -> None:
     shell_run('echo >> ~/.bashrc')
     shell_run('echo "# added by my-bash/install" >> ~/.bashrc')
     shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
-    shell_run(f'. {rc_path}') # also import into the current bash session
 
 
 class Rc:
@@ -57,3 +88,5 @@ if __name__ == '__main__':
 
     for rc in rc_list:
         rc.install()
+
+    print(Color.green('a new bash session is good for your health'))
