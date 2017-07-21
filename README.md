@@ -1,3 +1,9 @@
-# bash personalization and enhancement
+# Bash Personalization and Enhancement
 
-for productivity
+Run a command line and live a better life.
+
+## Install
+
+```
+$ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/my-bash/master/install)"
+```
