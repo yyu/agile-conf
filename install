@@ -1,4 +1,52 @@
 #!/usr/bin/env python3
 
+import os
+import urllib.request
+import subprocess
+
+
+def make_full_path(path):
+    return os.path.expanduser(path)
+
+
+def make_dir_as_needed(path):
+    folder = os.path.dirname(path)
+    os.makedirs(folder, exist_ok=True)
+
+
+def shell_run(cmd):
+    subprocess.check_call(cmd, shell=True)
+
+
+class Rc:
+    def __init__(self, local_path, url):
+        self.local_path = local_path
+        self.local_full_path = make_full_path(local_path)
+        self.url = url
+        self.post_download = self.add_to_bashrc
+
+    def download(self):
+        make_dir_as_needed(self.local_full_path)
+
+        with open(self.local_full_path, 'wt') as f:
+            response = urllib.request.urlopen(self.url)
+            f.write(response.read().decode())
+
+    def install(self):
+        print('%s <== %s' % (self.local_full_path, self.url))
+        self.download()
+        self.post_download()
+
+    def add_to_bashrc(self) -> None:
+        shell_run('echo >> ~/.bashrc')
+        shell_run('echo "# added by my-bash/install" >> ~/.bashrc')
+        shell_run('echo ". %s" >> ~/.bashrc' % self.local_path)
+
+
 if __name__ == '__main__':
-    print('hello')
+    rc_list = [
+        Rc('~/.my-bash/.termcolors.rc', 'https://raw.githubusercontent.com/yyu/my-bash/master/termcolors.rc')
+    ]
+
+    for rc in rc_list:
+        rc.install()
