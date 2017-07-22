@@ -1,39 +1,36 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
+import sys
 import urllib.request
 import subprocess
+
+from typing import Dict
 
 
 class Color:
 
     @staticmethod
-    def red(s):
-        return '\033[31m' + s + '\033[0m'
+    def red(s): return '\033[31m' + s + '\033[0m'
 
     @staticmethod
-    def green(s):
-        return '\033[32m' + s + '\033[0m'
+    def green(s): return '\033[32m' + s + '\033[0m'
 
     @staticmethod
-    def yellow(s):
-        return '\033[33m' + s + '\033[0m'
+    def yellow(s): return '\033[33m' + s + '\033[0m'
 
     @staticmethod
-    def blue(s):
-        return '\033[34m' + s + '\033[0m'
+    def blue(s): return '\033[34m' + s + '\033[0m'
 
     @staticmethod
-    def magenta(s):
-        return '\033[35m' + s + '\033[0m'
+    def magenta(s): return '\033[35m' + s + '\033[0m'
 
     @staticmethod
-    def cyan(s):
-        return '\033[36m' + s + '\033[0m'
+    def cyan(s): return '\033[36m' + s + '\033[0m'
 
     @staticmethod
-    def gray(s):
-        return '\033[37m' + s + '\033[0m'
+    def gray(s): return '\033[37m' + s + '\033[0m'
 
 
 def make_full_path(path: str) -> str:
@@ -56,8 +53,17 @@ def add_to_bashrc(rc_path: str) -> None:
     shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
 
 
+def standard_post_download(rc_path: str) -> None:
+    post_download_func_map = {
+        '.bashrc': add_to_bashrc
+    }
+
+    _, ext = os.path.splitext(rc_path)
+    post_download_func_map[ext](rc_path)
+
+
 class Rc:
-    def __init__(self, local_path: str, url: str,
+    def __init__(self, url: str, local_path: str,
                  post_download_func=lambda rc_path: print('no post-download procedure')):
         self.local_path = local_path
         self.local_full_path = make_full_path(local_path)
@@ -77,17 +83,44 @@ class Rc:
         self.post_download(self.local_path)
 
 
-if __name__ == '__main__':
-    install_folder = '~/.my-bash'
-    url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
+def parse_args() -> (str, str):
+    arg_parser = argparse.ArgumentParser()
 
-    rc_list = [
-        Rc(f'{install_folder}/.termcolors.rc',  f'{url_prefix}/termcolors.rc', add_to_bashrc),
-        Rc(f'{install_folder}/.terminal.prompt.rc',  f'{url_prefix}/terminal_bash_prompt.rc', add_to_bashrc),
-        Rc(f'{install_folder}/.bash.aliases.rc',  f'{url_prefix}/bash_aliases.rc', add_to_bashrc)
-    ]
+    arg_parser.add_argument(dest='urls', metavar='url', nargs='*')
+    arg_parser.add_argument('-o', dest='folder', action='store', help='folder for the downloaded content')
+
+    arguments = arg_parser.parse_args()
+
+    return arguments.folder, arguments.urls
+
+
+def make_url_map() -> Dict[str, str]:
+    """ parse the command line arguments and build a url->filepath map. url will be downloaded and saved as filepath
+
+    :return: the url->filepath map
+    """
+    install_folder, urls = parse_args()
+
+    if not install_folder:
+        install_folder = '~/.my-bash'
+
+    if not urls:
+        default_url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
+        urls = [
+            os.path.join(default_url_prefix, 'termcolors.bashrc'),
+            os.path.join(default_url_prefix, 'terminal_prompt.bashrc'),
+            os.path.join(default_url_prefix, 'aliases.bashrc')
+        ]
+
+    return {url: os.path.join(install_folder, os.path.basename(url)) for url in urls}
+
+
+if __name__ == '__main__':
+    url_map = make_url_map()
+
+    rc_list = [Rc(url, local_path, standard_post_download) for (url, local_path) in url_map.items()]
 
     for rc in rc_list:
         rc.install()
 
-    print(Color.green('a new bash session is good for your health'))
+    print(Color.green('\na new bash session is good for your health'), file=sys.stderr)
