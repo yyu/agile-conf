@@ -1,0 +1,9 @@
+[color]
+        diff = true
+        status = true
+        ui = auto
+[core]
+        editor = vi
+        pager = less -FMRiX
+[push]
+        default = simple

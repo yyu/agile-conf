@@ -1,0 +1,17 @@
+[alias]
+        st = status
+        lg = log -50 --oneline --graph --decorate --all
+        slg = log -50 --oneline --graph --decorate --all --simplify-by-decoration
+        lgme = log -50 --oneline --graph --decorate
+        llg = log --oneline --graph --decorate --all
+        mt = merge --squash -s recursive -X theirs
+        hash = log -1 --pretty=tformat:%H
+        visual = !gitk --all --simplify-by-decoration
+
+        # dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+        # dag = log --graph --format='format:%C(yellow)%h%C(reset) %<|(80,trunc)%s %m %C(cyan)%aN%C(reset) %C(magenta) %cr %C(reset) %C(auto) %d%C(reset)' --graph --all
+        # dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(cyan)%aN%C(reset)%C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%<|(200,trunc)%s' --graph --all
+        dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(auto)%d %C(reset)%<|(200,trunc)%s%C(cyan)%aN%C(reset) %C(magenta)%cr%C(reset) %C(white)%ci%C(reset)' --graph --all
+
+        # a demo
+        echo = "!f() { /bin/echo $@; }; f"
