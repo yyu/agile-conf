@@ -39,7 +39,7 @@ def make_full_path(path: str) -> str:
 
 
 def make_dir_as_needed(path: str) -> None:
-    folder = os.path.dirname(path)
+    folder = os.path.dirname(make_full_path(path))
     os.makedirs(folder, exist_ok=True)
 
 
@@ -149,6 +149,7 @@ def make_url_map() -> Dict[str, str]:
             os.path.join(default_url_prefix, 'syntax.vimrc'),
             os.path.join(default_url_prefix, 'cursor.vimrc'),
             os.path.join(default_url_prefix, 'files.vimrc'),
+            os.path.join(default_url_prefix, 'files.vimrc.bashrc'),
             os.path.join(default_url_prefix, 'more.vimrc'),
         ]
 
