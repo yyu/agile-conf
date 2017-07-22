@@ -3,6 +3,7 @@
 import argparse
 import os
 import sys
+import time
 import urllib.request
 import subprocess
 
@@ -53,13 +54,45 @@ def add_to_bashrc(rc_path: str) -> None:
     shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
 
 
-def standard_post_download(rc_path: str) -> None:
-    post_download_func_map = {
-        '.bashrc': add_to_bashrc
-    }
+def backup(file: str) -> str:
+    full_path = make_full_path(file)
+    existing_file = None
+    if os.path.exists(full_path):
+        existing_file = f'{full_path}-{time.time()}'
+        shell_run(f'/bin/mv {full_path} {existing_file}')
+    return existing_file
 
-    _, ext = os.path.splitext(rc_path)
-    post_download_func_map[ext](rc_path)
+
+def prepend_to_vimrc(rc_path: str, vimrc_path: str) -> None:
+    existing_vimrc = backup(vimrc_path)
+    shell_run(f': > {vimrc_path}')
+    append_to_vimrc(rc_path, vimrc_path)
+    if existing_vimrc:
+        shell_run(f'echo "\\" {existing_vimrc} is pasted below" >> {vimrc_path}')
+        shell_run(f'cat {existing_vimrc} >> {vimrc_path}')
+
+
+def append_to_vimrc(rc_path: str, vimrc_path: str) -> None:
+    shell_run(f'echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" >> {vimrc_path}')
+    shell_run(f'echo "\\" added by my-bash/install" >> {vimrc_path}')
+    shell_run(f'echo "source {rc_path}" >> {vimrc_path}')
+    shell_run(f'echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" >> {vimrc_path}')
+
+
+def add_to_vimrc(rc_path: str) -> None:
+    append_to_vimrc(rc_path, '~/.vimrc')
+
+
+def setup_vundle(rc_path: str) -> None:
+    prepend_to_vimrc(rc_path, '~/.vimrc')
+    install_vundle_plugins()
+
+
+def install_vundle_plugins():
+    vundle_path = '~/.vim/bundle/Vundle.vim'
+    backup(os.path.dirname(vundle_path))
+    shell_run(f'git clone https://github.com/VundleVim/Vundle.vim.git {vundle_path}')
+    shell_run('vim +PluginInstall +qall')
 
 
 class Rc:
@@ -107,12 +140,30 @@ def make_url_map() -> Dict[str, str]:
     if not urls:
         default_url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
         urls = [
+            # for .bashrc
             os.path.join(default_url_prefix, 'termcolors.bashrc'),
             os.path.join(default_url_prefix, 'terminal_prompt.bashrc'),
-            os.path.join(default_url_prefix, 'aliases.bashrc')
+            os.path.join(default_url_prefix, 'aliases.bashrc'),
+            # for .vimrc
+            os.path.join(default_url_prefix, 'vim_plugins.vundle'),
+            os.path.join(default_url_prefix, 'syntax.vimrc'),
+            os.path.join(default_url_prefix, 'cursor.vimrc'),
+            os.path.join(default_url_prefix, 'files.vimrc'),
+            os.path.join(default_url_prefix, 'more.vimrc'),
         ]
 
     return {url: os.path.join(install_folder, os.path.basename(url)) for url in urls}
+
+
+def standard_post_download(rc_path: str) -> None:
+    post_download_func_map = {
+        '.bashrc': add_to_bashrc,
+        '.vundle': setup_vundle,
+        '.vimrc': add_to_vimrc
+    }
+
+    _, ext = os.path.splitext(rc_path)
+    post_download_func_map[ext](rc_path)
 
 
 if __name__ == '__main__':
