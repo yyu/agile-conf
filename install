@@ -69,9 +69,11 @@ def prepend_to_vimrc(rc_path: str, vimrc_path: str) -> None:
     shell_run(f': > {vimrc_path}')
     append_to_vimrc(rc_path, vimrc_path)
     if existing_vimrc:
-        shell_run(f'echo "\\" added by agile-conf/install" >> {vimrc_path}')
-        shell_run(f'echo "\\" {existing_vimrc} is pasted below" >> {vimrc_path}')
+        shell_run(f'echo >> {vimrc_path}')
+        shell_run(f'echo "\\" {existing_vimrc} pasted below (added by agile-conf/install)" >> {vimrc_path}')
         shell_run(f'cat {existing_vimrc} >> {vimrc_path}')
+        shell_run(f'echo "\\" {existing_vimrc} pasted above (added by agile-conf/install)" >> {vimrc_path}')
+        shell_run(f'echo >> {vimrc_path}')
 
 
 def append_to_vimrc(rc_path: str, vimrc_path: str) -> None:
@@ -178,6 +180,7 @@ def make_url_map() -> Dict[str, str]:
             'bash.files.vimrc.bashrc',
             'bash.termcolors.bashrc',
             'bash.terminal_prompt.bashrc',
+            'bash.256colors.bashrc',
             # for git
             'git.root_gitconfig', # root gitconfig
             'git.basic.gitconfig',
@@ -196,6 +199,7 @@ def make_url_map() -> Dict[str, str]:
             'vi.cursor.vimrc',
             'vi.files.vimrc',
             'vi.syntax.vimrc',
+            'vi.tab.space.vimrc',
             'vi.more.vimrc',
         ]
         urls = [os.path.join(default_url_prefix, f) for f in files]
