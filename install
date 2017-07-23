@@ -173,7 +173,6 @@ def make_url_map() -> Dict[str, str]:
             # for .bashrc
             'bash.aliases.bashrc',
             'bash.files.vimrc.bashrc',
-            'bash.mac_fancy_prompt.bashrc',
             'bash.termcolors.bashrc',
             'bash.terminal_prompt.bashrc',
             # for git
@@ -190,11 +189,11 @@ def make_url_map() -> Dict[str, str]:
             'git.gitignore_global', # global gitignore
             'git.stCommitMsg',
             # for vim
+            'vi.vim_plugins.vundle',
             'vi.cursor.vimrc',
             'vi.files.vimrc',
-            'vi.more.vimrc',
             'vi.syntax.vimrc',
-            'vi.vim_plugins.vundle',
+            'vi.more.vimrc',
         ]
         urls = [os.path.join(default_url_prefix, f) for f in files]
 

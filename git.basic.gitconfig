@@ -3,7 +3,7 @@
         status = true
         ui = auto
 [core]
-        editor = vi
+        editor = vim
         pager = less -FMRiX
 [push]
         default = simple
