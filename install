@@ -169,31 +169,34 @@ def make_url_map() -> Dict[str, str]:
 
     if not urls:
         default_url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
-        urls = [
+        files = [
             # for .bashrc
-            os.path.join(default_url_prefix, 'termcolors.bashrc'),
-            os.path.join(default_url_prefix, 'terminal_prompt.bashrc'),
-            os.path.join(default_url_prefix, 'aliases.bashrc'),
-            # for .vimrc
-            os.path.join(default_url_prefix, 'vim_plugins.vundle'),
-            os.path.join(default_url_prefix, 'syntax.vimrc'),
-            os.path.join(default_url_prefix, 'cursor.vimrc'),
-            os.path.join(default_url_prefix, 'files.vimrc'),
-            os.path.join(default_url_prefix, 'files.vimrc.bashrc'),
-            os.path.join(default_url_prefix, 'more.vimrc'),
+            'bash.aliases.bashrc',
+            'bash.files.vimrc.bashrc',
+            'bash.mac_fancy_prompt.bashrc',
+            'bash.termcolors.bashrc',
+            'bash.terminal_prompt.bashrc',
             # for git
-            os.path.join(default_url_prefix, 'git.root_gitconfig'), # root gitconfig
-            os.path.join(default_url_prefix, 'git.basic.gitconfig'),
-            os.path.join(default_url_prefix, 'git.yy.gitconfig'),
-            os.path.join(default_url_prefix, 'git.aliases.gitconfig'),
-            os.path.join(default_url_prefix, 'git.github.gitconfig'),
-            os.path.join(default_url_prefix, 'git.linux.optional_gitconfig'), # optional
-            os.path.join(default_url_prefix, 'git.macos.optional_gitconfig'), # optional
-            os.path.join(default_url_prefix, 'git.diff.merge.optional_gitconfig'), # optional
-            os.path.join(default_url_prefix, 'git.lfs.optional_gitconfig'), # optional
-            os.path.join(default_url_prefix, 'git.gitignore_global'), # global gitignore
-            os.path.join(default_url_prefix, 'git.stCommitMsg'),
+            'git.root_gitconfig', # root gitconfig
+            'git.basic.gitconfig',
+            'git.yy.gitconfig',
+            'git.aliases.gitconfig',
+            'git.github.gitconfig',
+            'git.diff.merge.optional_gitconfig', # optional
+            'git.lfs.optional_gitconfig', # optional
+            'git.linux.optional_gitconfig', # optional
+            'git.macos.optional_gitconfig', # optional
+            'git.sourcetree.optional_gitconfig', # optional
+            'git.gitignore_global', # global gitignore
+            'git.stCommitMsg',
+            # for vim
+            'vi.cursor.vimrc',
+            'vi.files.vimrc',
+            'vi.more.vimrc',
+            'vi.syntax.vimrc',
+            'vi.vim_plugins.vundle',
         ]
+        urls = [os.path.join(default_url_prefix, f) for f in files]
 
     return {url: os.path.join(install_folder, os.path.basename(url)) for url in urls}
 
