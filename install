@@ -95,6 +95,36 @@ def install_vundle_plugins():
     shell_run('vim +PluginInstall +qall')
 
 
+def setup_root_gitconfig(rc_path: str) -> None:
+    gitconfig_path = '~/.gitconfig'
+    backup(gitconfig_path)
+    shell_run(f'cp {rc_path} {gitconfig_path}')
+
+
+def setup_gitconfig(rc_path: str) -> None:
+    gitconfig_path = '~/.gitconfig'
+    shell_run(f'echo "[include]" >> {gitconfig_path}')
+    shell_run(f'echo "        path = {rc_path}" >> {gitconfig_path}')
+
+
+def setup_optional_gitconfig(rc_path: str) -> None:
+    gitconfig_path = '~/.gitconfig'
+    shell_run(f'echo "# [include]" >> {gitconfig_path}')
+    shell_run(f'echo "#         path = {rc_path}" >> {gitconfig_path}')
+
+
+def setup_gitignore_global(rc_path: str) -> None:
+    gitconfig_path = '~/.gitconfig'
+    shell_run(f'echo "[core]" >> {gitconfig_path}')
+    shell_run(f'echo "        excludesfile = {rc_path}" >> {gitconfig_path}')
+
+
+def setup_st_commit_msg(rc_path: str) -> None:
+    gitconfig_path = '~/.gitconfig'
+    shell_run(f'echo "[commit]" >> {gitconfig_path}')
+    shell_run(f'echo "        template = {rc_path}" >> {gitconfig_path}')
+
+
 class Rc:
     def __init__(self, url: str, local_path: str,
                  post_download_func=lambda rc_path: print('no post-download procedure')):
@@ -151,6 +181,18 @@ def make_url_map() -> Dict[str, str]:
             os.path.join(default_url_prefix, 'files.vimrc'),
             os.path.join(default_url_prefix, 'files.vimrc.bashrc'),
             os.path.join(default_url_prefix, 'more.vimrc'),
+            # for git
+            os.path.join(default_url_prefix, 'git.root_gitconfig'), # root gitconfig
+            os.path.join(default_url_prefix, 'git.basic.gitconfig'),
+            os.path.join(default_url_prefix, 'git.yy.gitconfig'),
+            os.path.join(default_url_prefix, 'git.aliases.gitconfig'),
+            os.path.join(default_url_prefix, 'git.github.gitconfig'),
+            os.path.join(default_url_prefix, 'git.linux.optional_gitconfig'), # optional
+            os.path.join(default_url_prefix, 'git.macos.optional_gitconfig'), # optional
+            os.path.join(default_url_prefix, 'git.diff.merge.optional_gitconfig'), # optional
+            os.path.join(default_url_prefix, 'git.lfs.optional_gitconfig'), # optional
+            os.path.join(default_url_prefix, 'git.gitignore_global'), # global gitignore
+            os.path.join(default_url_prefix, 'git.stCommitMsg'),
         ]
 
     return {url: os.path.join(install_folder, os.path.basename(url)) for url in urls}
@@ -160,7 +202,12 @@ def standard_post_download(rc_path: str) -> None:
     post_download_func_map = {
         '.bashrc': add_to_bashrc,
         '.vundle': setup_vundle,
-        '.vimrc': add_to_vimrc
+        '.vimrc': add_to_vimrc,
+        '.root_gitconfig': setup_root_gitconfig,
+        '.gitconfig': setup_gitconfig,
+        '.optional_gitconfig': setup_optional_gitconfig,
+        '.gitignore_global': setup_gitignore_global,
+        '.stCommitMsg': setup_st_commit_msg,
     }
 
     _, ext = os.path.splitext(rc_path)
