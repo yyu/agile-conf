@@ -69,15 +69,14 @@ def prepend_to_vimrc(rc_path: str, vimrc_path: str) -> None:
     shell_run(f': > {vimrc_path}')
     append_to_vimrc(rc_path, vimrc_path)
     if existing_vimrc:
+        shell_run(f'echo "\\" added by my-bash/install" >> {vimrc_path}')
         shell_run(f'echo "\\" {existing_vimrc} is pasted below" >> {vimrc_path}')
         shell_run(f'cat {existing_vimrc} >> {vimrc_path}')
 
 
 def append_to_vimrc(rc_path: str, vimrc_path: str) -> None:
-    shell_run(f'echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" >> {vimrc_path}')
     shell_run(f'echo "\\" added by my-bash/install" >> {vimrc_path}')
     shell_run(f'echo "source {rc_path}" >> {vimrc_path}')
-    shell_run(f'echo """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" >> {vimrc_path}')
 
 
 def add_to_vimrc(rc_path: str) -> None:
@@ -225,6 +224,19 @@ def parse_args() -> (str, str):
     description_sep = '\n    '
     supported_types = description_sep.join(post_download_func_map.keys())
     description = f'supports:{description_sep}{supported_types}'
+    description += '\n\n'
+    description += '''Check the following to clean up:
+    ~/.bashrc
+    ~/.vimrc
+    ~/.gitconfig
+    ~/.my-bash/
+    ~/.vim/
+    ~/.vim/vundle/
+    '''
+    description += '\n\n'
+    description += '''To remove all lines added by my-bash, run
+    gnu-sed -i.bak -e "/added by my-bash/,+2d" ~/.bashrc  # bsd sed, used by macos, may not work
+    '''
     arg_parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
 
     arg_parser.add_argument(dest='urls', metavar='url', nargs='*')
