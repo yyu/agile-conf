@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import urllib.request
+import urllib.parse
 import subprocess
 
 from typing import Dict
@@ -146,15 +147,18 @@ class Rc:
         self.post_download(self.local_path)
 
 
-def parse_args() -> (str, str):
-    arg_parser = argparse.ArgumentParser()
+def make_typed_local_path(url: str) -> str:
+    """
+    fragment at the end of url will be used as the type, which is
+    one of the keys in post_download_func_map such as '.bashrc', '.gitconfig', etc.
 
-    arg_parser.add_argument(dest='urls', metavar='url', nargs='*')
-    arg_parser.add_argument('-o', dest='folder', action='store', help='folder for the downloaded content')
+    examples:
+        file:///tmp/file#.bashrc
+        file:///$HOME/amazon.gitconfig#.optional_gitconfig
+    """
+    defraged_url, file_type = urllib.parse.urldefrag(url)
 
-    arguments = arg_parser.parse_args()
-
-    return arguments.folder, arguments.urls
+    return os.path.basename(defraged_url) + file_type
 
 
 def make_url_map() -> Dict[str, str]:
@@ -197,23 +201,38 @@ def make_url_map() -> Dict[str, str]:
         ]
         urls = [os.path.join(default_url_prefix, f) for f in files]
 
-    return {url: os.path.join(install_folder, os.path.basename(url)) for url in urls}
+    return {url: os.path.join(install_folder, make_typed_local_path(url)) for url in urls}
+
+
+post_download_func_map = {
+    '.bashrc': add_to_bashrc,
+    '.vundle': setup_vundle,
+    '.vimrc': add_to_vimrc,
+    '.root_gitconfig': setup_root_gitconfig,
+    '.gitconfig': setup_gitconfig,
+    '.optional_gitconfig': setup_optional_gitconfig,
+    '.gitignore_global': setup_gitignore_global,
+    '.stCommitMsg': setup_st_commit_msg,
+}
 
 
 def standard_post_download(rc_path: str) -> None:
-    post_download_func_map = {
-        '.bashrc': add_to_bashrc,
-        '.vundle': setup_vundle,
-        '.vimrc': add_to_vimrc,
-        '.root_gitconfig': setup_root_gitconfig,
-        '.gitconfig': setup_gitconfig,
-        '.optional_gitconfig': setup_optional_gitconfig,
-        '.gitignore_global': setup_gitignore_global,
-        '.stCommitMsg': setup_st_commit_msg,
-    }
-
     _, ext = os.path.splitext(rc_path)
     post_download_func_map[ext](rc_path)
+
+
+def parse_args() -> (str, str):
+    description_sep = '\n    '
+    supported_types = description_sep.join(post_download_func_map.keys())
+    description = f'supports:{description_sep}{supported_types}'
+    arg_parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
+
+    arg_parser.add_argument(dest='urls', metavar='url', nargs='*')
+    arg_parser.add_argument('-o', dest='folder', action='store', help='folder for the downloaded content')
+
+    arguments = arg_parser.parse_args()
+
+    return arguments.folder, arguments.urls
 
 
 if __name__ == '__main__':
