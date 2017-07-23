@@ -5,7 +5,7 @@ Run a command line and live a better life.
 ## Install
 
 ```
-$ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/my-bash/master/install)"
+$ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/agile-conf/master/install)"
 ```
 
 ## Troubleshooting
@@ -14,5 +14,5 @@ On `ssl.SSLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed (_s
 
 Example:
 ```
-$ SSL_CERT_FILE=/etc/pki/tls/cert.pem python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/my-bash/master/install)"
+$ SSL_CERT_FILE=/etc/pki/tls/cert.pem python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/agile-conf/master/install)"
 ```

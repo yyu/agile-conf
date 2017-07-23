@@ -51,7 +51,7 @@ def shell_run(cmd: str) -> int:
 
 def add_to_bashrc(rc_path: str) -> None:
     shell_run('echo >> ~/.bashrc')
-    shell_run('echo "# added by my-bash/install" >> ~/.bashrc')
+    shell_run('echo "# added by agile-conf/install" >> ~/.bashrc')
     shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
 
 
@@ -69,13 +69,13 @@ def prepend_to_vimrc(rc_path: str, vimrc_path: str) -> None:
     shell_run(f': > {vimrc_path}')
     append_to_vimrc(rc_path, vimrc_path)
     if existing_vimrc:
-        shell_run(f'echo "\\" added by my-bash/install" >> {vimrc_path}')
+        shell_run(f'echo "\\" added by agile-conf/install" >> {vimrc_path}')
         shell_run(f'echo "\\" {existing_vimrc} is pasted below" >> {vimrc_path}')
         shell_run(f'cat {existing_vimrc} >> {vimrc_path}')
 
 
 def append_to_vimrc(rc_path: str, vimrc_path: str) -> None:
-    shell_run(f'echo "\\" added by my-bash/install" >> {vimrc_path}')
+    shell_run(f'echo "\\" added by agile-conf/install" >> {vimrc_path}')
     shell_run(f'echo "source {rc_path}" >> {vimrc_path}')
 
 
@@ -168,10 +168,10 @@ def make_url_map() -> Dict[str, str]:
     install_folder, urls = parse_args()
 
     if not install_folder:
-        install_folder = '~/.my-bash'
+        install_folder = '~/.agile-conf'
 
     if not urls:
-        default_url_prefix = 'https://raw.githubusercontent.com/yyu/my-bash/master'
+        default_url_prefix = 'https://raw.githubusercontent.com/yyu/agile-conf/master'
         files = [
             # for .bashrc
             'bash.aliases.bashrc',
@@ -229,13 +229,13 @@ def parse_args() -> (str, str):
     ~/.bashrc
     ~/.vimrc
     ~/.gitconfig
-    ~/.my-bash/
+    ~/.agile-conf/
     ~/.vim/
     ~/.vim/vundle/
     '''
     description += '\n\n'
-    description += '''To remove all lines added by my-bash, run
-    gnu-sed -i.bak -e "/added by my-bash/,+2d" ~/.bashrc  # bsd sed, used by macos, may not work
+    description += '''To remove all lines added by agile-conf, run
+    gnu-sed -i.bak -e "/added by agile-conf/,+2d" ~/.bashrc  # bsd sed, used by macos, may not work
     '''
     arg_parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
 
