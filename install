@@ -59,7 +59,7 @@ def no_post_download(rc_path: str) -> None:
 
 def add_to_bashrc(rc_path: str) -> None:
     shell_run('echo >> ~/.bashrc')
-    shell_run('echo "# added by agile-conf/install" >> ~/.bashrc')
+    shell_run(f'echo "# added by agile-conf/install ({time.asctime()})" >> ~/.bashrc')
     shell_run(f'echo ". {rc_path}" >> ~/.bashrc')
 
 
@@ -94,7 +94,7 @@ def prepend_to_rc(rc_path: str, dest_rc_path: str) -> None:
 
 def append_to_rc(rc_path: str, dest_rc_path: str) -> None:
     comment_str = get_comment_str(dest_rc_path)
-    shell_run(f'echo "{comment_str} added by agile-conf/install" >> {dest_rc_path}')
+    shell_run(f'echo "{comment_str} added by agile-conf/install ({time.asctime()})" >> {dest_rc_path}')
     shell_run(f'echo "source {rc_path}" >> {dest_rc_path}')
 
 
@@ -194,7 +194,7 @@ def make_url_map() -> Dict[str, str]:
         install_folder = '~/.agile-conf'
 
     if not urls:
-        default_url_prefix = 'https://raw.githubusercontent.com/yyu/agile-conf/master'
+        default_url_prefix = 'https://raw.githubusercontent.com/yyu/agile-conf/master' # aka https://git.io/v7LAT
         files = [
             # for .bashrc
             'bash.aliases.bashrc',
@@ -269,7 +269,7 @@ def parse_args() -> (str, str):
     '''
     description += '\n\n'
     description += '''To remove all lines added by agile-conf, run
-    gnu-sed -i.bak -e "/added by agile-conf/,+2d" ~/.bashrc  # bsd sed, used by macos, may not work
+    gnu-sed -i.bak -e "/added by agile-conf/,+2d" ~/.bashrc  # bsd sed used by macos may not work
     '''
     arg_parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawTextHelpFormatter)
 
