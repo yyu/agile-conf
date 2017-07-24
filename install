@@ -226,7 +226,7 @@ def make_url_map() -> Dict[str, str]:
             'vi.more.vimrc',
             # for tmux
             'tmux.keys.tmux_conf',
-            'tmux.macosvim.tmux_conf',
+            'tmux.macosvim.optional_tmux_conf',
             # scripts
             'git.diff.sh'
         ]
