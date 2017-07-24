@@ -1,4 +1,4 @@
-[diff]
-        tool = vimdiff
 [merge]
         tool = meld
+[diff]
+        tool = vimdiff

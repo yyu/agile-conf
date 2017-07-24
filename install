@@ -64,29 +64,42 @@ def backup(file: str) -> str:
     return existing_file
 
 
-def prepend_to_vimrc(rc_path: str, vimrc_path: str) -> None:
-    existing_vimrc = backup(vimrc_path)
-    shell_run(f': > {vimrc_path}')
-    append_to_vimrc(rc_path, vimrc_path)
-    if existing_vimrc:
-        shell_run(f'echo >> {vimrc_path}')
-        shell_run(f'echo "\\" {existing_vimrc} pasted below (added by agile-conf/install)" >> {vimrc_path}')
-        shell_run(f'cat {existing_vimrc} >> {vimrc_path}')
-        shell_run(f'echo "\\" {existing_vimrc} pasted above (added by agile-conf/install)" >> {vimrc_path}')
-        shell_run(f'echo >> {vimrc_path}')
+def get_comment_str(filename: str) -> str:
+    if filename.endswith('.vimrc'):
+        return '\\"'
+    else:
+        return '#'
 
 
-def append_to_vimrc(rc_path: str, vimrc_path: str) -> None:
-    shell_run(f'echo "\\" added by agile-conf/install" >> {vimrc_path}')
-    shell_run(f'echo "source {rc_path}" >> {vimrc_path}')
+def prepend_to_rc(rc_path: str, dest_rc_path: str) -> None:
+    existing_dest_rc = backup(dest_rc_path)
+    comment_str = get_comment_str(dest_rc_path)
+    shell_run(f': > {dest_rc_path}')
+    append_to_rc(rc_path, dest_rc_path)
+    if existing_dest_rc:
+        shell_run(f'echo >> {dest_rc_path}')
+        shell_run(f'echo "{comment_str} {existing_dest_rc} pasted below (added by agile-conf/install)" >> {dest_rc_path}')
+        shell_run(f'cat {existing_dest_rc} >> {dest_rc_path}')
+        shell_run(f'echo "{comment_str} {existing_dest_rc} pasted above (added by agile-conf/install)" >> {dest_rc_path}')
+        shell_run(f'echo >> {dest_rc_path}')
+
+
+def append_to_rc(rc_path: str, dest_rc_path: str) -> None:
+    comment_str = get_comment_str(dest_rc_path)
+    shell_run(f'echo "{comment_str} added by agile-conf/install" >> {dest_rc_path}')
+    shell_run(f'echo "source {rc_path}" >> {dest_rc_path}')
 
 
 def add_to_vimrc(rc_path: str) -> None:
-    append_to_vimrc(rc_path, '~/.vimrc')
+    append_to_rc(rc_path, '~/.vimrc')
+
+
+def add_to_tmux_conf(rc_path: str) -> None:
+    append_to_rc(rc_path, '~/.tmux.conf')
 
 
 def setup_vundle(rc_path: str) -> None:
-    prepend_to_vimrc(rc_path, '~/.vimrc')
+    prepend_to_rc(rc_path, '~/.vimrc')
     install_vundle_plugins()
 
 
@@ -211,6 +224,7 @@ post_download_func_map = {
     '.bashrc': add_to_bashrc,
     '.vundle': setup_vundle,
     '.vimrc': add_to_vimrc,
+    '.tmux_conf': add_to_tmux_conf,
     '.root_gitconfig': setup_root_gitconfig,
     '.gitconfig': setup_gitconfig,
     '.optional_gitconfig': setup_optional_gitconfig,
@@ -232,6 +246,7 @@ def parse_args() -> (str, str):
     description += '''Check the following to clean up:
     ~/.bashrc
     ~/.vimrc
+    ~/.tmux.conf
     ~/.gitconfig
     ~/.agile-conf/
     ~/.vim/
