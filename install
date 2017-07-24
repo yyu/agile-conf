@@ -49,7 +49,11 @@ def shell_run(cmd: str) -> int:
     return subprocess.check_call(cmd, shell=True)
 
 
-def no_post_download(rc_path):
+def make_executable(rc_path: str) -> None:
+    shell_run(f'chmod +x {rc_path}')
+
+
+def no_post_download(rc_path: str) -> None:
     pass
 
 
@@ -227,8 +231,8 @@ def make_url_map() -> Dict[str, str]:
 
 
 post_download_func_map = {
-    '.sh': no_post_download,
-    '.bash': no_post_download,
+    '.sh': make_executable,
+    '.bash': make_executable,
     '.resource': no_post_download,
     '.bashrc': add_to_bashrc,
     '.vundle': setup_vundle,
