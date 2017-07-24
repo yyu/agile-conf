@@ -1,4 +1,4 @@
 [core]
         editor = mvim -f
 [diff]
-        tool = opendiff
+        external = ~/.agile-conf/git.diff.sh
