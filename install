@@ -293,4 +293,5 @@ if __name__ == '__main__':
     for rc in rc_list:
         rc.install()
 
+    print(Color.green('\ncheck the results: vim -o ~/.bashrc ~/.vimrc ~/.tmux.conf ~/.gitconfig'), file=sys.stderr)
     print(Color.green('\na new bash session is good for your health'), file=sys.stderr)
