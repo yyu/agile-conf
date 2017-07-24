@@ -4,13 +4,21 @@ Run a command line and live a better life.
 
 ## Install
 
-```
-$ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/agile-conf/master/install)"
-```
+### Install all default confs
 
 ```
-$ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/agile-conf/master/install)" https://raw.githubusercontent.com/yyu/agile-conf/master/bash.aliases.bashrc
+$ python3 -c "$(curl -fsSL https://git.io/v7LAT)"
 ```
+([`https://git.io/v7LAT`](https://git.io/v7LAT) is shortened [`https://raw.githubusercontent.com/yyu/agile-conf/master/install`](https://raw.githubusercontent.com/yyu/agile-conf/master/install).)
+
+### Install specified confs
+
+```
+$ export aconf=https://raw.githubusercontent.com/yyu/agile-conf/master
+$ python3 -c "$(curl -fsSL $aconf/install)" $aconf/bash.aliases.bashrc $aconf/vi.syntax.vimrc
+```
+
+### Help
 
 ```
 $ python3 -c "$(curl -fsSL https://raw.githubusercontent.com/yyu/agile-conf/master/install)" -h
