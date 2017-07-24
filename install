@@ -7,6 +7,7 @@ import time
 import urllib.request
 import urllib.parse
 import subprocess
+import functools
 
 from typing import Dict
 
@@ -92,18 +93,19 @@ def prepend_to_rc(rc_path: str, dest_rc_path: str) -> None:
         shell_run(f'echo >> {dest_rc_path}')
 
 
-def append_to_rc(rc_path: str, dest_rc_path: str) -> None:
+def append_to_rc(rc_path: str, dest_rc_path: str, is_optional: bool = False) -> None:
     comment_str = get_comment_str(dest_rc_path)
     shell_run(f'echo "{comment_str} added by agile-conf/install ({time.asctime()})" >> {dest_rc_path}')
-    shell_run(f'echo "source {rc_path}" >> {dest_rc_path}')
+    comment_str_for_optional_conf = f'{comment_str} ' if is_optional else ''
+    shell_run(f'echo "{comment_str_for_optional_conf}source {rc_path}" >> {dest_rc_path}')
 
 
 def add_to_vimrc(rc_path: str) -> None:
     append_to_rc(rc_path, '~/.vimrc')
 
 
-def add_to_tmux_conf(rc_path: str) -> None:
-    append_to_rc(rc_path, '~/.tmux.conf')
+def add_to_tmux_conf(rc_path: str, is_optional: bool = False) -> None:
+    append_to_rc(rc_path, '~/.tmux.conf', is_optional)
 
 
 def setup_vundle(rc_path: str) -> None:
@@ -224,6 +226,7 @@ def make_url_map() -> Dict[str, str]:
             'vi.more.vimrc',
             # for tmux
             'tmux.keys.tmux_conf',
+            'tmux.macosvim.tmux_conf',
             # scripts
             'git.diff.sh'
         ]
@@ -240,6 +243,7 @@ post_download_func_map = {
     '.vundle': setup_vundle,
     '.vimrc': add_to_vimrc,
     '.tmux_conf': add_to_tmux_conf,
+    '.optional_tmux_conf': functools.partial(add_to_tmux_conf, is_optional=True),
     '.root_gitconfig': setup_root_gitconfig,
     '.gitconfig': setup_gitconfig,
     '.optional_gitconfig': setup_optional_gitconfig,
