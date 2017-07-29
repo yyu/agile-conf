@@ -1,3 +1,5 @@
-set-option -g prefix C-x
-unbind-key C-b
-bind-key x send-prefix
+set-option    -g     prefix C-x
+unbind-key           C-b
+bind-key      x      send-prefix
+
+set-option    -g     base-index 1

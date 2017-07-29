@@ -1,0 +1,14 @@
+#set-option -g   repeat-time 500
+#set-option -g   visual-activity off
+#set-option -g   visual-activity on
+
+set-option -g   bell-action any
+set-option -g   visual-bell on
+
+set-option -g   history-limit 100000
+
+set-option -g   message-bg red
+set-option -g   message-fg white
+
+set-option -g   set-titles on
+set-option -g   set-titles-string ' #I-#W '
