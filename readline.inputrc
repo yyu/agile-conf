@@ -1,0 +1,7 @@
+set editing-mode vi
+set keymap vi-command
+# Command-mode keymaps go here...
+set keymap vi-insert
+# Insert-mode keymaps go here; example:
+"KJ": vi-movement-mode
+

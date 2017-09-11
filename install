@@ -120,6 +120,12 @@ def install_vundle_plugins():
     shell_run('vim +PluginInstall +qall')
 
 
+def setup_readline_inputrc(rc_path: str) -> None:
+    readline_config_path = '~/.inputrc'
+    backup(readline_config_path)
+    shell_run(f'cp {rc_path} {readline_config_path}')
+
+
 def setup_root_gitconfig(rc_path: str) -> None:
     gitconfig_path = '~/.gitconfig'
     backup(gitconfig_path)
@@ -204,6 +210,8 @@ def make_url_map() -> Dict[str, str]:
             'bash.termcolors.bashrc',
             'bash.terminal_prompt.bashrc',
             'bash.256colors.bashrc',
+            # for readline
+            'readline.inputrc',
             # for git
             'git.root_gitconfig', # root gitconfig
             'git.basic.gitconfig',
@@ -249,6 +257,7 @@ post_download_func_map = {
     '.tmux_conf': add_to_tmux_conf,
     '.optional_tmux_conf': functools.partial(add_to_tmux_conf, is_optional=True),
     '.root_gitconfig': setup_root_gitconfig,
+    '.inputrc': setup_readline_inputrc,
     '.gitconfig': setup_gitconfig,
     '.optional_gitconfig': setup_optional_gitconfig,
     '.gitignore_global': setup_gitignore_global,
