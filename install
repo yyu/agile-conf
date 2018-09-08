@@ -101,6 +101,10 @@ def append_to_rc(rc_path: str, dest_rc_path: str, is_optional: bool = False) -> 
 
 
 def add_to_vimrc(rc_path: str) -> None:
+    make_dir_as_needed('~/.vim')
+    make_dir_as_needed('~/.vim/backups')
+    make_dir_as_needed('~/.vim/swapfiles')
+
     append_to_rc(rc_path, '~/.vimrc')
 
 
