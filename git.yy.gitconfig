@@ -1,6 +1,7 @@
 [user]
         name = y²
-        email = yy@yuyuan.org
+        #email = yy@yuyuan.org
+        useconfigonly = true
 [github]
         user = yyu
         token =
