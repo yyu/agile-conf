@@ -13,5 +13,8 @@
         # dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(cyan)%aN%C(reset)%C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%<|(200,trunc)%s' --graph --all
         dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(auto)%d %C(reset)%<|(200,trunc)%s%C(cyan)%aN%C(reset) %C(magenta)%cr%C(reset) %C(white)%ci%C(reset)' --graph --all
 
+        yy = config --local user.email "yy@yuyuan.org"
+        forresty = config --local user.email "forresty@amazon.com"
+
         # a demo
         echo = "!f() { /bin/echo $@; }; f"
