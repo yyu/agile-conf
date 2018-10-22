@@ -312,3 +312,4 @@ if __name__ == '__main__':
 
     print(Color.green('\ncheck the results: vim -o ~/.bashrc ~/.vimrc ~/.tmux.conf ~/.gitconfig'), file=sys.stderr)
     print(Color.green('\na new bash session is good for your health'), file=sys.stderr)
+    print(Color.cyan('\n\nalso consider:\n    git clone git://github.com/rkitover/vimpager'), file=sys.stderr)
