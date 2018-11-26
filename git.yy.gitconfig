@@ -2,6 +2,7 @@
         name = y²
         #email = yy@yuyuan.org
         useconfigonly = true
+        signingkey = 807C28C21C02FDF8
 [github]
         user = yyu
         token =
