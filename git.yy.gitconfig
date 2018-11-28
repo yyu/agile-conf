@@ -2,7 +2,8 @@
         name = y²
         #email = yy@yuyuan.org
         useconfigonly = true
-        signingkey = 807C28C21C02FDF8
+        #signingkey = 807C28C21C02FDF8
+        #signingkey = 3F838375F644936F
 [commit]
         gpgsign = true
 [github]

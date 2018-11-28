@@ -16,5 +16,7 @@
         yy = config --local user.email "yy@yuyuan.org"
         forresty = config --local user.email "forresty@amazon.com"
 
+        keys = !echo "user.signingkey = [ 807C28C21C02FDF8 3F838375F644936F ]; git commit [ -S807C28C21C02FDF8 -S3F838375F644936F ]"
+
         # a demo
         echo = "!f() { /bin/echo $@; }; f"
