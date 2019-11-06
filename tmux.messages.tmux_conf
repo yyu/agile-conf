@@ -7,8 +7,13 @@ set-option -g   visual-bell on
 
 set-option -g   history-limit 100000
 
-set-option -g   message-bg red
-set-option -g   message-fg white
+# for tmux < 2.9
+#set-option -g   message-bg red
+#set-option -g   message-fg white
+
+# for tmux >= 2.9
+set-option -g   message-style bg=red
+set-option -g   message-style fg=white
 
 set-option -g   set-titles on
 set-option -g   set-titles-string ' #I-#W '

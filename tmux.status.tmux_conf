@@ -9,5 +9,10 @@ set-option -g   status-right ' | %Y-%m-%d %H:%M #[default]'
 
 # statusbar colors
 set-option -g   status-fg white
-set-option -g   status-bg green
-set-option -g   status-attr bright
+set-option -g   status-bg blue
+
+# for tmux < 2.9
+#set-option -g   status-attr bright
+
+# for tmux >= 2.9
+#set-option -g   status-style bright
