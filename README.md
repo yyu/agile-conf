@@ -7,6 +7,7 @@ Run a command line and live a better life.
 ### Install all default confs
 
 ```
+$ sudo apt install git curl wget vim tree build-essential
 $ python3 -c "$(curl -fsSL https://git.io/v7LAT)"
 ```
 ([`https://git.io/v7LAT`](https://git.io/v7LAT) is shortened [`https://raw.githubusercontent.com/yyu/agile-conf/master/install`](https://raw.githubusercontent.com/yyu/agile-conf/master/install).)
